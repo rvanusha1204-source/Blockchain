@@ -240,6 +240,14 @@
             padding: 0 2rem;
         }
 
+        /* About Section Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
         .stat-card {
             background: white;
             padding: 1.5rem;
@@ -998,6 +1006,38 @@
                 <button class="btn btn-secondary" onclick="refreshBlockchain()">🔄 Refresh Chain</button>
             </div>
             <div id="blockchainView"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2 class="section-title">The Smart Donation Pillars</h2>
+        <p class="section-subtitle">Our three-part technology stack ensures unprecedented transparency and trust.</p>
+        
+        <div class="about-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="color: var(--color-primary);">⛓️</div>
+                <div class="ngo-title" style="margin-bottom: 0.5rem;">Transparent Blockchain</div>
+                <p class="ngo-description" style="margin-bottom: 0; color: var(--color-text-secondary);">
+                    An immutable, SHA-256-based ledger tracks every rupee from donor to the final recipient, providing a permanent and verifiable trail for full accountability.
+                </p>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="color: var(--color-accent);">🛡️</div>
+                <div class="ngo-title" style="margin-bottom: 0.5rem;">AI Fraud Guard</div>
+                <p class="ngo-description" style="margin-bottom: 0; color: var(--color-text-secondary);">
+                    A robust 35-parameter analysis model calculates legitimacy scores using key indicators like registration age, LinkedIn verification, and fund utilization ratios.
+                </p>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="color: var(--color-primary);">🗣️</div>
+                <div class="ngo-title" style="margin-bottom: 0.5rem;">Inclusive NLP</div>
+                <p class="ngo-description" style="margin-bottom: 0; color: var(--color-text-secondary);">
+                    Our multilingual voice assistant and chatbot are designed for maximum accessibility, supporting comprehension and interaction in 10+ major Indian languages.
+                </p>
+            </div>
         </div>
     </section>
 
@@ -1856,31 +1896,47 @@
             processVoiceCommand(command) {
                 console.log('Voice command:', command);
                 
-                // Add to chatbot
+                // Add to chatbot and get initial response
                 addMessage(command, 'user');
-                const response = chatbot.respond(command);
-                addMessage(response, 'bot');
+                const chatbotResponse = chatbot.respond(command);
+                addMessage(chatbotResponse, 'bot');
                 
-                // Speak response immediately after processing
+                const intent = chatbot.classifyIntent(command);
+                let spokenResponse = chatbotResponse;
+                let uiActionTaken = false;
+
+                if (intent === 'ngo_search') {
+                    const category = chatbot.extractCategory(command);
+                    // Refine Search Result Handling: Filter ngoData based on category
+                    const filteredNgos = ngoData.filter(n => 
+                        !category || n.category.toLowerCase().includes(category.toLowerCase())
+                    );
+                    
+                    if (filteredNgos.length > 0) {
+                        const firstNgo = filteredNgos[0];
+                        
+                        // Voice-to-Action Bridge: Construct the required spoken response
+                        spokenResponse = `I found ${filteredNgos.length} NGOs for ${firstNgo.category}. I am opening the donation page for ${firstNgo.name} so you can support them.`;
+                        
+                        // Automatically call openDonationModal after a brief delay (1.5-2 seconds)
+                        setTimeout(() => {
+                            openDonationModal(firstNgo.id);
+                        }, 1800); // 1.8 seconds delay
+                        
+                        uiActionTaken = true;
+                    }
+                }
+                
+                // Speak the determined response (custom if action, otherwise chatbot's default)
                 setTimeout(() => {
-                    this.speak(response);
+                    this.speak(spokenResponse);
                 }, 300);
                 
-                // Execute command actions
-                const lowerCommand = command.toLowerCase();
-                
-                if (lowerCommand.includes('donate') || lowerCommand.includes('donation')) {
-                    setTimeout(() => {
-                        const firstNgo = ngoData[0];
-                        openDonationModal(firstNgo.id);
-                    }, 2000);
-                }
-                
-                if (lowerCommand.includes('blockchain') || lowerCommand.includes('transaction')) {
+                // Preserve scroll-to-section features for "Blockchain" or "NGOs."
+                if (intent === 'blockchain') {
                     document.getElementById('blockchain').scrollIntoView({ behavior: 'smooth' });
-                }
-                
-                if (lowerCommand.includes('ngo') || lowerCommand.includes('organization')) {
+                } else if (intent === 'ngo_search' || intent === 'donation') {
+                    // Scroll to NGOs section for search, donation, or general NGO commands
                     document.getElementById('ngos').scrollIntoView({ behavior: 'smooth' });
                 }
             }
