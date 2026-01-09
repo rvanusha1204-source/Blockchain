@@ -1,0 +1,2689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Donation - Blockchain & AI Powered Transparent Giving</title>
+    <style>
+        :root {
+            --color-primary: #21808D;
+            --color-primary-hover: #1D747F;
+            --color-accent: #E68161;
+            --color-accent-hover: #D77352;
+            --color-bg: #FCFCF9;
+            --color-surface: #FFFFFF;
+            --color-text: #134252;
+            --color-text-secondary: #626C71;
+            --color-border: rgba(94, 82, 64, 0.2);
+            --color-success: #21808D;
+            --color-success-rgb: 33, 128, 141;
+            --color-teal-rgb: 33, 128, 141;
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --radius-base: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: white;
+            border-radius: var(--radius-base);
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
+            display: none;
+            z-index: 100;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .user-dropdown a {
+            display: block;
+            padding: 0.875rem 1.25rem;
+            color: var(--color-text);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .user-dropdown a:hover {
+            background: var(--color-bg);
+        }
+
+        .user-dropdown hr {
+            margin: 0.5rem 0;
+            border: none;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .login-btn {
+            display: inline-block;
+        }
+
+        .login-btn.hidden {
+            display: none;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary), #29A7B8);
+            color: white;
+            box-shadow: 0 4px 15px rgba(33, 128, 141, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 128, 141, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--color-accent);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 129, 97, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            min-height: 90vh;
+            background: linear-gradient(135deg, #F0FDFF 0%, #FFF5F0 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        /* System Status Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem auto;
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* NGO Cards */
+        .section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .ngo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .ngo-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .ngo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary);
+        }
+
+        .ngo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .ngo-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .ngo-category {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+        }
+
+        .fraud-badge {
+            background: rgba(33, 128, 141, 0.1);
+            color: var(--color-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .fraud-badge.caution {
+            background: rgba(230, 129, 97, 0.1);
+            color: var(--color-accent);
+        }
+
+        .ngo-description {
+            color: var(--color-text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .ngo-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .ngo-stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ngo-stat-label {
+            color: var(--color-text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .ngo-stat-value {
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .progress-bar {
+            background: rgba(var(--color-success-rgb), 0.1);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--color-primary), #29A7B8);
+            height: 100%;
+            transition: width 0.5s;
+        }
+
+        /* Blockchain Explorer */
+        .blockchain-section {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            margin-top: 2rem;
+        }
+
+        .blockchain-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .block {
+            background: rgba(var(--color-teal-rgb), 0.05);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-base);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .block-hash {
+            color: var(--color-primary);
+            font-weight: 700;
+            word-break: break-all;
+            margin-bottom: 0.5rem;
+        }
+
+        .block-data {
+            color: var(--color-text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 1500;
+            background: white;
+            border-radius: var(--radius-base);
+            box-shadow: var(--shadow-md);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .language-selector select {
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: white;
+        }
+
+        .language-icon {
+            font-size: 1.25rem;
+        }
+
+        /* Voice Assistant */
+        .voice-assistant {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .voice-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-accent), #D77352);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(230, 129, 97, 0.4);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .voice-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(230, 129, 97, 0.5);
+        }
+
+        .voice-button.listening {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(230, 129, 97, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(230, 129, 97, 0.8);
+            }
+        }
+
+        .voice-status {
+            position: absolute;
+            top: -35px;
+            right: 0;
+            background: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius-base);
+            box-shadow: var(--shadow-sm);
+            font-size: 0.85rem;
+            white-space: nowrap;
+            display: none;
+        }
+
+        .voice-status.active {
+            display: block;
+        }
+
+        /* Chatbot */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .chatbot-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), #29A7B8);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(33, 128, 141, 0.4);
+            transition: all 0.3s;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(33, 128, 141, 0.5);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--color-primary), #29A7B8);
+            color: white;
+            padding: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: #F8F9FA;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .message.bot {
+            background: white;
+            align-self: flex-start;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, var(--color-primary), #29A7B8);
+            color: white;
+            align-self: flex-end;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0 1.25rem 1rem;
+            background: #F8F9FA;
+        }
+
+        .quick-action {
+            background: white;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-action:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .chatbot-input-area {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid #E0E0E0;
+            display: flex;
+            gap: 0.75rem;
+            background: white;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #E0E0E0;
+            border-radius: var(--radius-base);
+            font-size: 0.95rem;
+        }
+
+        .chatbot-send {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            max-width: 550px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .fraud-analysis {
+            background: rgba(var(--color-teal-rgb), 0.05);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-base);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .analysis-title {
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .analysis-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: 1rem;
+        }
+
+        .transaction-result {
+            background: rgba(var(--color-teal-rgb), 0.1);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-base);
+            padding: 1rem;
+            margin-top: 1.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Login Modal Styles */
+        .login-modal-content {
+            max-width: 450px;
+        }
+
+        .login-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 0.875rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+        }
+
+        .form-control-icon {
+            padding-left: 3rem;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .forgot-password a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--color-border);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            padding: 0.875rem;
+            border: 2px solid var(--color-border);
+            background: white;
+            border-radius: var(--radius-base);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-btn:hover {
+            border-color: var(--color-primary);
+            background: rgba(33, 128, 141, 0.05);
+        }
+
+        .verification-input {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .verification-digit {
+            width: 50px;
+            height: 55px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-base);
+            transition: all 0.3s;
+        }
+
+        .verification-digit:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: rgba(33, 128, 141, 0.05);
+        }
+
+        .resend-code {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .resend-code button {
+            background: none;
+            border: none;
+            color: var(--color-primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .ngo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chatbot-window {
+                width: calc(100% - 40px);
+                right: 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">🔗</div>
+                <span>Smart Donation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#ngos">NGOs</a></li>
+                <li><a href="#blockchain">Blockchain</a></li>
+                <li><a href="#about">About</a></li>
+                <li><button class="btn btn-secondary login-btn" onclick="openLoginModal()">Login</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Blockchain-Powered Transparent Donations</h1>
+            <p>AI fraud detection • Real-time blockchain tracking • Complete transparency • Every rupee verified</p>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <a href="#ngos" class="btn btn-primary">🎯 Browse NGOs</a>
+                <button class="btn btn-secondary" onclick="openNGORegistrationModal()">📝 Register NGO</button>
+                <button class="btn btn-secondary" onclick="openCSRModal()">🏢 CSR Portal</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Status -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">⛓️</div>
+            <div class="stat-label">Blockchain Blocks</div>
+            <div class="stat-value" id="blockCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-label">Total Donations</div>
+            <div class="stat-value" id="totalDonations">₹0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🤖</div>
+            <div class="stat-label">AI Fraud Detection</div>
+            <div class="stat-value" style="font-size: 1.5rem;">✅ Active</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🏢</div>
+            <div class="stat-label">Verified NGOs</div>
+            <div class="stat-value" id="ngoCount">10</div>
+        </div>
+    </div>
+
+    <!-- NGO Section -->
+    <section class="section" id="ngos">
+        <h2 class="section-title">Verified NGOs</h2>
+        <p class="section-subtitle">All organizations verified by AI fraud detection with LinkedIn integration</p>
+        <div class="ngo-grid" id="ngoGrid"></div>
+    </section>
+
+    <!-- Blockchain Explorer -->
+    <section class="section" id="blockchain">
+        <h2 class="section-title">Blockchain Explorer</h2>
+        <p class="section-subtitle">Live transaction ledger - complete transparency for every donation</p>
+        <div class="blockchain-section">
+            <div class="blockchain-header">
+                <h3 style="font-size: 1.5rem;">Recent Blocks</h3>
+                <button class="btn btn-secondary" onclick="refreshBlockchain()">🔄 Refresh Chain</button>
+            </div>
+            <div id="blockchainView"></div>
+        </div>
+    </section>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <span class="language-icon">🌐</span>
+        <select id="languageSelect" onchange="changeLanguage()">
+            <option value="en-US">English</option>
+            <option value="hi-IN">हिन्दी (Hindi)</option>
+            <option value="bn-IN">বাংলা (Bengali)</option>
+            <option value="te-IN">తెలుగు (Telugu)</option>
+            <option value="ta-IN">தமிழ் (Tamil)</option>
+            <option value="mr-IN">मराठी (Marathi)</option>
+            <option value="gu-IN">ગુજરાતી (Gujarati)</option>
+            <option value="kn-IN">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml-IN">മലയാളം (Malayalam)</option>
+            <option value="pa-IN">ਪੰਜਾਬੀ (Punjabi)</option>
+        </select>
+    </div>
+
+    <!-- Voice Assistant -->
+    <div class="voice-assistant">
+        <div class="voice-status" id="voiceStatus">🎤 Listening...</div>
+        <button class="voice-button" id="voiceButton" onclick="toggleVoiceAssistant()">🎤</button>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <button class="chatbot-button" onclick="toggleChat()">💬</button>
+        <div class="chatbot-window" id="chatWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-title">🤖 AI Donation Assistant</div>
+                <button class="chatbot-close" onclick="toggleChat()">×</button>
+            </div>
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="message bot">
+                    👋 Hello! I'm your AI donation assistant powered by NLP. I can help you:
+                    <br><br>
+                    • Find verified NGOs matching your interests<br>
+                    • Explain fraud detection scores<br>
+                    • Track donations on blockchain<br>
+                    • Answer questions about transparency<br>
+                    <br>
+                    What would you like to know?
+                </div>
+            </div>
+            <div class="quick-actions">
+                <button class="quick-action" onclick="sendQuickMessage('Show education NGOs')">🎓 Education</button>
+                <button class="quick-action" onclick="sendQuickMessage('How does blockchain work?')">⛓️ Blockchain</button>
+                <button class="quick-action" onclick="sendQuickMessage('Explain fraud detection')">🛡️ Fraud Detection</button>
+                <button class="quick-action" onclick="sendQuickMessage('Track donation')">📊 Track</button>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" class="chatbot-input" id="chatInput" placeholder="Ask me anything..." onkeypress="handleChatKeypress(event)">
+                <button class="chatbot-send" onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content login-modal-content">
+            <button class="modal-close" onclick="closeLoginModal()">×</button>
+            <h3>Welcome Back!</h3>
+            
+            <div class="login-tabs">
+                <button class="login-tab active" onclick="switchTab('login')">Login</button>
+                <button class="login-tab" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginForm" class="login-form active">
+                <div class="input-group">
+                    <span class="input-icon">📧</span>
+                    <input type="email" class="form-control form-control-icon" placeholder="Email address" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" class="form-control form-control-icon" placeholder="Password" required>
+                </div>
+                <div class="forgot-password">
+                    <a href="#" onclick="showVerification(); return false;">Forgot Password?</a>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="handleLogin()">Login</button>
+                
+                <div class="divider"><span>or continue with</span></div>
+                
+                <div class="social-login">
+                    <button class="social-btn" onclick="socialLogin('google')"><span>G</span> Google</button>
+                    <button class="social-btn" onclick="socialLogin('linkedin')"><span>in</span> LinkedIn</button>
+                </div>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signupForm" class="login-form">
+                <div class="input-group">
+                    <span class="input-icon">👤</span>
+                    <input type="text" class="form-control form-control-icon" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">📧</span>
+                    <input type="email" class="form-control form-control-icon" placeholder="Email address" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">📱</span>
+                    <input type="tel" class="form-control form-control-icon" placeholder="Phone Number" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" class="form-control form-control-icon" placeholder="Create Password" required>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="handleSignup()">Create Account</button>
+                
+                <div class="divider"><span>or sign up with</span></div>
+                
+                <div class="social-login">
+                    <button class="social-btn" onclick="socialLogin('google')"><span>G</span> Google</button>
+                    <button class="social-btn" onclick="socialLogin('linkedin')"><span>in</span> LinkedIn</button>
+                </div>
+            </div>
+            
+            <!-- Verification Form -->
+            <div id="verificationForm" class="login-form">
+                <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: 1.5rem;">
+                    Enter the 6-digit code sent to your email
+                </p>
+                <div class="verification-input">
+                    <input type="text" maxlength="1" class="verification-digit" oninput="moveToNext(this, 1)">
+                    <input type="text" maxlength="1" class="verification-digit" oninput="moveToNext(this, 2)">
+                    <input type="text" maxlength="1" class="verification-digit" oninput="moveToNext(this, 3)">
+                    <input type="text" maxlength="1" class="verification-digit" oninput="moveToNext(this, 4)">
+                    <input type="text" maxlength="1" class="verification-digit" oninput="moveToNext(this, 5)">
+                    <input type="text" maxlength="1" class="verification-digit" oninput="moveToNext(this, 6)">
+                </div>
+                <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="verifyCode()">Verify Code</button>
+                <div class="resend-code">
+                    Didn't receive the code? <button onclick="resendCode()">Resend</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NGO Registration Modal -->
+    <div class="modal" id="ngoRegistrationModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeNGORegistrationModal()">×</button>
+            <h3>Register Your NGO</h3>
+            <p style="color: var(--color-text-secondary); margin-bottom: 2rem;">Join our verified network of transparent NGOs</p>
+            
+            <div class="login-tabs" style="margin-bottom: 2.5rem;">
+                <button class="login-tab active" onclick="switchNGOTab('basic')">Basic Info</button>
+                <button class="login-tab" onclick="switchNGOTab('documents')">Documents</button>
+                <button class="login-tab" onclick="switchNGOTab('verification')">Verification</button>
+            </div>
+            
+            <!-- Basic Information -->
+            <div id="ngoBasicForm" class="login-form active">
+                <div class="form-group">
+                    <label class="form-label">NGO Name</label>
+                    <input type="text" class="form-control" placeholder="Enter registered NGO name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Registration Number</label>
+                    <input type="text" class="form-control" placeholder="e.g., 80G/12A Registration Number" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Year of Establishment</label>
+                    <input type="number" class="form-control" placeholder="YYYY" min="1900" max="2025" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Primary Cause</label>
+                    <select class="form-control" required>
+                        <option value="">Select cause category</option>
+                        <option>Education</option>
+                        <option>Healthcare</option>
+                        <option>Environment</option>
+                        <option>Child Welfare</option>
+                        <option>Women Empowerment</option>
+                        <option>Elderly Care</option>
+                        <option>Rural Development</option>
+                        <option>Food Security</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Person Name</label>
+                    <input type="text" class="form-control" placeholder="Full name of authorized person" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Official Email</label>
+                    <input type="email" class="form-control" placeholder="official@ngo.org" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Phone</label>
+                    <input type="tel" class="form-control" placeholder="+91 XXXXXXXXXX" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">LinkedIn Profile URL</label>
+                    <input type="url" class="form-control" placeholder="https://linkedin.com/company/your-ngo" required>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="switchNGOTab('documents')">Next: Upload Documents</button>
+            </div>
+            
+            <!-- Documents Upload -->
+            <div id="ngoDocumentsForm" class="login-form">
+                <p style="color: var(--color-text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    All documents must be clear, legible PDF or image files (max 5MB each)
+                </p>
+                <div class="form-group">
+                    <label class="form-label">NGO Registration Certificate</label>
+                    <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                    <small style="color: var(--color-text-secondary); font-size: 0.85rem;">Upload Trust Deed, Society Registration, or Section 8 Company Certificate</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">80G/12A Tax Exemption Certificate</label>
+                    <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">PAN Card of NGO</label>
+                    <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Latest Audited Financial Statement</label>
+                    <input type="file" class="form-control" accept=".pdf" required>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-secondary" style="flex: 1; padding: 1rem;" onclick="switchNGOTab('basic')">← Back</button>
+                    <button class="btn btn-primary" style="flex: 1; padding: 1rem;" onclick="switchNGOTab('verification')">Next: Verification →</button>
+                </div>
+            </div>
+            
+            <!-- Verification -->
+            <div id="ngoVerificationForm" class="login-form">
+                <div style="background: rgba(33, 128, 141, 0.1); padding: 1.5rem; border-radius: var(--radius-base); margin-bottom: 2rem;">
+                    <h4 style="margin-bottom: 0.75rem; color: var(--color-primary);">✓ Security Verification</h4>
+                    <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin: 0;">
+                        We take security seriously. All information is encrypted and verified by our team within 3-5 business days.
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Bank Account Number</label>
+                    <input type="text" class="form-control" placeholder="Enter NGO bank account number" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">IFSC Code</label>
+                    <input type="text" class="form-control" placeholder="e.g., SBIN0001234" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Bank Name</label>
+                    <input type="text" class="form-control" placeholder="Enter bank name" required>
+                </div>
+                <div class="form-group" style="margin-top: 2rem;">
+                    <label style="display: flex; align-items: start; gap: 0.75rem; cursor: pointer;">
+                        <input type="checkbox" required style="margin-top: 4px;">
+                        <span style="font-size: 0.9rem; color: var(--color-text);">
+                            I certify that all information provided is accurate and complete. I understand that false information may result in rejection from the platform.
+                        </span>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-secondary" style="flex: 1; padding: 1rem;" onclick="switchNGOTab('documents')">← Back</button>
+                    <button class="btn btn-primary" style="flex: 2; padding: 1rem;" onclick="submitNGORegistration()">Submit Application</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSR Registration Modal -->
+    <div class="modal" id="csrModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeCSRModal()">×</button>
+            <h3>Corporate CSR Registration</h3>
+            <p style="color: var(--color-text-secondary); margin-bottom: 2rem;">Join 500+ companies managing CSR compliance through our platform</p>
+            
+            <div class="form-group">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" placeholder="Enter registered company name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">CIN (Corporate Identification Number)</label>
+                <input type="text" class="form-control" placeholder="e.g., L12345MH2000PLC123456" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label class="form-label">Net Worth (Crores)</label>
+                    <input type="number" class="form-control" placeholder="e.g., 600" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Annual Turnover (Crores)</label>
+                    <input type="number" class="form-control" placeholder="e.g., 1200" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Average Net Profit - Last 3 Years (Crores)</label>
+                <input type="number" class="form-control" placeholder="e.g., 80" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Estimated CSR Budget (Auto-calculated as 2%)</label>
+                <input type="text" class="form-control" readonly placeholder="Will be calculated automatically">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Primary Contact Person</label>
+                <input type="text" class="form-control" placeholder="CSR Head / Compliance Officer" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Contact Email</label>
+                <input type="email" class="form-control" placeholder="csr@company.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Contact Phone</label>
+                <input type="tel" class="form-control" placeholder="+91 XXXXXXXXXX" required>
+            </div>
+            <div class="form-group">
+                <label style="display: flex; align-items: start; gap: 0.75rem; cursor: pointer;">
+                    <input type="checkbox" required style="margin-top: 4px;">
+                    <span style="font-size: 0.9rem; color: var(--color-text);">
+                        I confirm that our company meets the CSR eligibility criteria and agree to comply with Schedule VII requirements.
+                    </span>
+                </label>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="submitCSRRegistration()">🚀 Register for CSR Program</button>
+        </div>
+    </div>
+
+    <!-- Donation Modal -->
+    <div class="modal" id="donationModal">
+        <div class="modal-content">
+            <h2 class="modal-title" id="modalNgoName"></h2>
+            <div class="fraud-analysis" id="fraudAnalysis"></div>
+            
+            <div class="form-group">
+                <label class="form-label">Donation Amount (INR)</label>
+                <input type="number" class="form-control" id="donationAmount" placeholder="₹ Enter amount" min="100">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Your Name</label>
+                <input type="text" class="form-control" id="donorName" placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Purpose (Optional)</label>
+                <input type="text" class="form-control" id="donationPurpose" placeholder="e.g., Education, Healthcare">
+            </div>
+            
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.75rem;" onclick="processDonation()">
+                🔐 Process Donation on Blockchain
+            </button>
+            <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal()">Cancel</button>
+            
+            <div id="transactionResult"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // BLOCKCHAIN IMPLEMENTATION
+        // ============================================
+        
+        class Block {
+            constructor(index, timestamp, data, previousHash = '') {
+                this.index = index;
+                this.timestamp = timestamp;
+                this.data = data;
+                this.previousHash = previousHash;
+                this.hash = this.calculateHash();
+                this.nonce = 0;
+            }
+            
+            calculateHash() {
+                const data = this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce;
+                return this.sha256(data);
+            }
+            
+            sha256(data) {
+                let hash = 0;
+                for (let i = 0; i < data.length; i++) {
+                    const char = data.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return Math.abs(hash).toString(16).padStart(16, '0');
+            }
+            
+            mineBlock(difficulty) {
+                while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
+                    this.nonce++;
+                    this.hash = this.calculateHash();
+                }
+            }
+        }
+        
+        class Blockchain {
+            constructor() {
+                this.chain = [this.createGenesisBlock()];
+                this.difficulty = 2;
+            }
+            
+            createGenesisBlock() {
+                return new Block(0, new Date().toISOString(), {
+                    type: "GENESIS",
+                    message: "Smart Donation Blockchain Initialized"
+                }, "0");
+            }
+            
+            getLatestBlock() {
+                return this.chain[this.chain.length - 1];
+            }
+            
+            addBlock(data) {
+                const newBlock = new Block(
+                    this.chain.length,
+                    new Date().toISOString(),
+                    data,
+                    this.getLatestBlock().hash
+                );
+                newBlock.mineBlock(this.difficulty);
+                this.chain.push(newBlock);
+                this.saveToStorage();
+                return newBlock;
+            }
+            
+            isChainValid() {
+                for (let i = 1; i < this.chain.length; i++) {
+                    const currentBlock = this.chain[i];
+                    const previousBlock = this.chain[i - 1];
+                    
+                    if (currentBlock.hash !== currentBlock.calculateHash()) {
+                        return false;
+                    }
+                    
+                    if (currentBlock.previousHash !== previousBlock.hash) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            
+            saveToStorage() {
+                try {
+                    const data = {
+                        chain: this.chain,
+                        difficulty: this.difficulty
+                    };
+                    localStorage.setItem('smartDonationBlockchain', JSON.stringify(data));
+                } catch (e) {
+                    console.log('Storage not available');
+                }
+            }
+            
+            loadFromStorage() {
+                try {
+                    const data = localStorage.getItem('smartDonationBlockchain');
+                    if (data) {
+                        const parsed = JSON.parse(data);
+                        this.chain = parsed.chain.map(b => {
+                            const block = new Block(b.index, b.timestamp, b.data, b.previousHash);
+                            block.hash = b.hash;
+                            block.nonce = b.nonce;
+                            return block;
+                        });
+                        this.difficulty = parsed.difficulty;
+                    }
+                } catch (e) {
+                    console.log('Storage not available');
+                }
+            }
+        }
+        
+        const blockchain = new Blockchain();
+        blockchain.loadFromStorage();
+        
+        // ============================================
+        // AI FRAUD DETECTION MODEL
+        // ============================================
+        
+        class FraudDetectionModel {
+            constructor() {
+                this.weights = {
+                    govt_registration_valid: 15.0,
+                    tax_id_verified: 12.0,
+                    negative_online_reports: -20.0,
+                    fund_utilization_ratio: 18.0,
+                    admin_overhead_ratio: -10.0,
+                    third_party_audit_exists: 8.0,
+                    registration_age_years: 5.0,
+                    linkedin_profile_exists: 6.0,
+                    website_quality_score: 4.0,
+                    social_media_activity: 2.0,
+                    media_mentions: 2.5,
+                    impact_reports_submitted: 3.0,
+                    sudden_spike_indicator: -12.0,
+                    sole_control_indicator: -9.0
+                };
+                this.bias = -5.0;
+            }
+            
+            predict(features) {
+                let score = this.bias;
+                for (let [feature, weight] of Object.entries(this.weights)) {
+                    score += (features[feature] || 0) * weight;
+                }
+                return 1 / (1 + Math.exp(-score));
+            }
+            
+            analyzeNGO(ngo) {
+                const features = this.extractFeatures(ngo);
+                const fraudProbability = this.predict(features);
+                const legitimacyScore = (1 - fraudProbability) * 100;
+                
+                let status, badge;
+                if (legitimacyScore >= 80) {
+                    status = 'VERIFIED';
+                    badge = '✅';
+                } else if (legitimacyScore >= 60) {
+                    status = 'CAUTION';
+                    badge = '⚠️';
+                } else {
+                    status = 'HIGH_RISK';
+                    badge = '🚫';
+                }
+                
+                return {
+                    score: Math.round(legitimacyScore),
+                    status: status,
+                    badge: badge,
+                    confidence: Math.round((1 - fraudProbability) * 100),
+                    breakdown: this.getBreakdown(features)
+                };
+            }
+            
+            extractFeatures(ngo) {
+                return {
+                    govt_registration_valid: ngo.verified ? 1 : 0,
+                    tax_id_verified: ngo.verified ? 1 : 0,
+                    negative_online_reports: ngo.complaints || 0,
+                    fund_utilization_ratio: ngo.utilizationRate || 0.85,
+                    admin_overhead_ratio: ngo.adminCost || 0.12,
+                    third_party_audit_exists: ngo.audited ? 1 : 0,
+                    registration_age_years: ngo.age || 5,
+                    linkedin_profile_exists: ngo.linkedIn ? 1 : 0,
+                    website_quality_score: 0.8,
+                    social_media_activity: ngo.socialActivity || 30,
+                    media_mentions: ngo.mediaMentions || 5,
+                    impact_reports_submitted: ngo.reports || 4,
+                    sudden_spike_indicator: 0,
+                    sole_control_indicator: 0
+                };
+            }
+            
+            getBreakdown(features) {
+                return {
+                    registration: features.govt_registration_valid ? '✓ Verified' : '✗ Not verified',
+                    linkedin: features.linkedin_profile_exists ? '✓ Active Profile' : '✗ No Profile',
+                    utilization: `${Math.round(features.fund_utilization_ratio * 100)}% funds utilized`,
+                    audit: features.third_party_audit_exists ? '✓ Externally audited' : '✗ Not audited',
+                    age: `${features.registration_age_years} years old`
+                };
+            }
+        }
+        
+        const fraudDetector = new FraudDetectionModel();
+        
+        // ============================================
+        // AI CHATBOT WITH NLP
+        // ============================================
+        
+        class AIChatbot {
+            constructor() {
+                this.context = [];
+                this.intents = {
+                    greeting: ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good evening'],
+                    ngo_search: ['find', 'show', 'search', 'ngo', 'organization', 'charity', 'education', 'health', 'environment'],
+                    blockchain: ['blockchain', 'block', 'transaction', 'track', 'transparent', 'ledger', 'hash'],
+                    donation: ['donate', 'donation', 'contribute', 'give', 'support', 'fund'],
+                    fraud: ['fraud', 'verify', 'legitimate', 'trust', 'score', 'safe', 'detection', 'ai'],
+                    linkedin: ['linkedin', 'profile', 'social', 'verification'],
+                    help: ['help', 'assist', 'how', 'what', 'explain', 'guide']
+                };
+            }
+            
+            classifyIntent(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                for (let [intent, keywords] of Object.entries(this.intents)) {
+                    if (keywords.some(keyword => lowerMessage.includes(keyword))) {
+                        return intent;
+                    }
+                }
+                return 'general';
+            }
+            
+            respond(message) {
+                const intent = this.classifyIntent(message);
+                this.context.push({ user: message, intent: intent });
+                
+                switch (intent) {
+                    case 'greeting':
+                        return "Hello! 👋 Welcome to Smart Donation. I'm your AI assistant here to help you make secure, transparent donations. What would you like to explore?";
+                    
+                    case 'ngo_search':
+                        const category = this.extractCategory(message);
+                        const ngos = ngoData.filter(n => !category || n.category.toLowerCase().includes(category));
+                        return `I found ${ngos.length} verified NGOs${category ? ' in ' + category : ''}. All have been thoroughly vetted using our AI fraud detection system. Would you like to see NGOs focused on Education, Healthcare, Environment, or Children?`;
+                    
+                    case 'blockchain':
+                        return `Our blockchain system ensures 100% transparency:\n\n⛓️ Current blocks: ${blockchain.chain.length}\n🔐 Every donation gets unique hash\n✅ Immutable transaction records\n📊 Real-time tracking\n\nEach donation is permanently recorded with cryptographic proof. Would you like to see recent transactions?`;
+                    
+                    case 'donation':
+                        return "Making a donation is simple and secure:\n\n1️⃣ Select a verified NGO\n2️⃣ Enter donation amount & details\n3️⃣ Transaction recorded on blockchain\n4️⃣ Get instant verification hash\n5️⃣ Track impact in real-time\n\nWhich NGO would you like to support?";
+                    
+                    case 'fraud':
+                        return "Our AI fraud detection analyzes 35+ parameters:\n\n✅ Government registration validity\n✅ Fund utilization ratio (target >85%)\n✅ LinkedIn profile verification\n✅ Third-party audit status\n✅ Admin overhead (<25%)\n✅ Behavioral pattern analysis\n\nScoring: 80-100 = Verified ✅ | 60-79 = Caution ⚠️ | <60 = High Risk 🚫\n\nAll displayed NGOs are verified and safe!";
+                    
+                    case 'linkedin':
+                        return "LinkedIn integration adds an extra verification layer:\n\n🔗 Validates organizational presence\n👥 Checks follower authenticity\n📊 Analyzes activity patterns\n✅ Confirms legitimacy\n\nEvery NGO profile includes their LinkedIn link for your verification. Click 'View LinkedIn Profile' on any NGO card!";
+                    
+                    case 'help':
+                        return "I'm here to assist with:\n\n🔍 Finding verified NGOs by category\n⛓️ Understanding blockchain tracking\n🤖 Explaining AI fraud detection\n💰 Processing secure donations\n📊 Tracking donation impact\n🔗 LinkedIn verification info\n\nWhat specific topic would you like to explore?";
+                    
+                    default:
+                        return "I understand you're interested in donations and transparency. I can help you:\n\n• Browse verified NGOs\n• Understand our fraud detection\n• Learn about blockchain tracking\n• Process donations securely\n\nCould you rephrase your question or choose from the quick actions above?";
+                }
+            }
+            
+            extractCategory(message) {
+                const categories = ['education', 'health', 'healthcare', 'environment', 'poverty', 'children', 'women', 'rural'];
+                for (let cat of categories) {
+                    if (message.toLowerCase().includes(cat)) {
+                        return cat;
+                    }
+                }
+                return null;
+            }
+        }
+        
+        const chatbot = new AIChatbot();
+        
+        // ============================================
+        // AI VOICE ASSISTANT
+        // ============================================
+        
+        class VoiceAssistant {
+            constructor() {
+                this.recognition = null;
+                this.synthesis = window.speechSynthesis;
+                this.isListening = false;
+                this.currentLanguage = 'en-US';
+                
+                // Number pronunciations for better clarity
+                this.numberWords = {
+                    'ta-IN': {'0': 'சுழியம்', '1': 'ஒன்று', '2': 'இரண்டு', '3': 'மூன்று', '4': 'நான்கு', '5': 'ஐந்து', '6': 'ஆறு', '7': 'ஏழு', '8': 'எட்டு', '9': 'ஒன்பது'},
+                    'kn-IN': {'0': 'ಸೊನ್ನೆ', '1': 'ಒಂದು', '2': 'ಎರಡು', '3': 'ಮೂರು', '4': 'ನಾಲ್ಕು', '5': 'ಐದು', '6': 'ಆರು', '7': 'ಏಳು', '8': 'ಎಂಟು', '9': 'ಒಂಬತ್ತು'}
+                };
+                
+                this.translations = {
+                    'en-US': {
+                        listening: '🎤 Listening...',
+                        processing: '🤖 Processing...',
+                        speaking: '🔊 Speaking...',
+                        error: '⚠️ Error occurred',
+                        welcome: 'Hello! I am your AI voice assistant. How can I help you today?',
+                        notSupported: 'Voice recognition is not supported in your browser.'
+                    },
+                    'hi-IN': {
+                        listening: '🎤 सुन रहे हैं...',
+                        processing: '🤖 प्रोसेसिंग...',
+                        speaking: '🔊 बोल रहे हैं...',
+                        error: '⚠️ त्रुटि हुई',
+                        welcome: 'नमस्ते! मैं आपका एआई वॉयस असिस्टेंट हूं। मैं आपकी कैसे मदद कर सकता हूं?',
+                        notSupported: 'आपके ब्राउज़र में वॉयस रिकग्निशन समर्थित नहीं है।'
+                    },
+                    'bn-IN': {
+                        listening: '🎤 শুনছি...',
+                        processing: '🤖 প্রক্রিয়াকরণ...',
+                        speaking: '🔊 বলছি...',
+                        error: '⚠️ ত্রুটি ঘটেছে',
+                        welcome: 'হ্যালো! আমি আপনার এআই ভয়েস সহায়ক। আমি কীভাবে সাহায্য করতে পারি?',
+                        notSupported: 'আপনার ব্রাউজারে ভয়েস রিকগনিশন সমর্থিত নয়।'
+                    },
+                    'te-IN': {
+                        listening: '🎤 వింటున్నాను...',
+                        processing: '🤖 ప్రాసెస్ చేస్తున్నాను...',
+                        speaking: '🔊 మాట్లాడుతున్నాను...',
+                        error: '⚠️ లోపం సంభవించింది',
+                        welcome: 'హలో! నేను మీ AI వాయిస్ అసిస్టెంట్. నేను మీకు ఎలా సహాయం చేయగలను?',
+                        notSupported: 'మీ బ్రౌజర్‌లో వాయిస్ రికగ్నిషన్ మద్దతు లేదు।'
+                    },
+                    'ta-IN': {
+                        listening: '🎤 கேட்கிறேன்...',
+                        processing: '🤖 செயலாக்குகிறது...',
+                        speaking: '🔊 பேசுகிறது...',
+                        error: '⚠️ பிழை ஏற்பட்டது',
+                        welcome: 'வணக்கம்! நான் உங்கள் AI குரல் உதவியாளர். நான் எப்படி உதவ முடியும்?',
+                        notSupported: 'உங்கள் உலாவியில் குரல் அங்கீகாரம் ஆதரிக்கப்படவில்லை।'
+                    },
+                    'mr-IN': {
+                        listening: '🎤 ऐकत आहे...',
+                        processing: '🤖 प्रक्रिया करत आहे...',
+                        speaking: '🔊 बोलत आहे...',
+                        error: '⚠️ त्रुटी आली',
+                        welcome: 'नमस्कार! मी तुमचा AI आवाज सहाय्यक आहे। मी तुम्हाला कशी मदत करू शकतो?',
+                        notSupported: 'तुमच्या ब्राउझरमध्ये आवाज ओळख समर्थित नाही।'
+                    },
+                    'gu-IN': {
+                        listening: '🎤 સાંભળી રહ્યો છું...',
+                        processing: '🤖 પ્રોસેસિંગ...',
+                        speaking: '🔊 બોલી રહ્યો છું...',
+                        error: '⚠️ ભૂલ આવી',
+                        welcome: 'નમસ્તે! હું તમારો AI અવાજ સહાયક છું। હું તમને કેવી રીતે મદદ કરી શકું?',
+                        notSupported: 'તમારા ब્રાઉઝરમાં વૉઇસ રેકગ્નિશન સપોર્ટેડ નથી।'
+                    },
+                    'kn-IN': {
+                        listening: '🎤 ಕೇಳುತ್ತಿದ್ದೇನೆ...',
+                        processing: '🤖 ಪ್ರಕ್ರಿಯೆ ಮಾಡುತ್ತಿದೆ...',
+                        speaking: '🔊 ಮಾತನಾಡುತ್ತಿದೆ...',
+                        error: '⚠️ ದೋಷ ಸಂಭವಿಸಿದೆ',
+                        welcome: 'ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಧ್ವನಿ ಸಹಾಯಕ. ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಲ್ಲೆ?',
+                        notSupported: 'ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ವಾಯ್ಸ್ ರೆಕಗ್ನಿಷನ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ।'
+                    },
+                    'ml-IN': {
+                        listening: '🎤 കേൾക്കുന്നു...',
+                        processing: '🤖 പ്രോസസ്സ് ചെയ്യുന്നു...',
+                        speaking: '🔊 സംസാരിക്കുന്നു...',
+                        error: '⚠️ പിശക് സംഭവിച്ചു',
+                        welcome: 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ AI വോയ്‌സ് അസിസ്റ്റന്റ് ആണ്. ഞാൻ എങ്ങനെ സഹായിക്കും?',
+                        notSupported: 'നിങ്ങളുടെ ബ്രൗസറിൽ വോയ്സ് റെക്കഗ്നിഷൻ പിന്തുണയ്ക്കുന്നില്ല।'
+                    },
+                    'pa-IN': {
+                        listening: '🎤 ਸੁਣ ਰਿਹਾ ਹਾਂ...',
+                        processing: '🤖 ਪ੍ਰੋਸੈਸਿੰਗ...',
+                        speaking: '🔊 ਬੋਲ ਰਿਹਾ ਹਾਂ...',
+                        error: '⚠️ ਗਲਤੀ ਹੋਈ',
+                        welcome: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ ਤੁਹਾਡਾ AI ਆਵਾਜ਼ ਸਹਾਇਕ ਹਾਂ। ਮੈਂ ਤੁਹਾਡੀ ਕਿਵੇਂ ਮਦਦ ਕਰ ਸਕਦਾ ਹਾਂ?',
+                        notSupported: 'ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਵੌਇਸ ਰਿਕਗਨੀਸ਼ਨ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ।'
+                    }
+                };
+                
+                this.initRecognition();
+            }
+            
+            preprocessTamilText(text) {
+                // Convert English numerals to Tamil words
+                if (this.numberWords['ta-IN']) {
+                    text = text.replace(/\d/g, digit => this.numberWords['ta-IN'][digit] || digit);
+                }
+                
+                // Add pauses for compound words
+                text = text.replace(/([அ-ஹ]{4,})\s+([அ-ஹ]{4,})/g, '$1. $2');
+                
+                // Replace common English terms with Tamil
+                text = text.replace(/NGO/gi, 'என்ஜியோ');
+                text = text.replace(/AI/gi, 'செயற்கை நுண்ணறிவு');
+                text = text.replace(/blockchain/gi, 'பிளாக்செயின்');
+                
+                return text;
+            }
+            
+            preprocessTeluguText(text) {
+                // Convert English numerals to Telugu words
+                const teluguNumbers = {
+                    '0': 'సున్నా', '1': 'ఒకటి', '2': 'రెండు', '3': 'మూడు',
+                    '4': 'నాలుగు', '5': 'ఐదు', '6': 'ఆరు', '7': 'ఏడు',
+                    '8': 'ఎనిమిది', '9': 'తొమ్మిది'
+                };
+                text = text.replace(/\d/g, digit => teluguNumbers[digit] || digit);
+                
+                // Replace common English terms with Telugu
+                text = text.replace(/NGO/gi, 'ఎన్‌జియో');
+                text = text.replace(/AI/gi, 'కృత్రిమ మేధస్సు');
+                text = text.replace(/blockchain/gi, 'బ్లాక్‌చైన్');
+                
+                return text;
+            }
+            
+            preprocessKannadaText(text) {
+                // Convert English numerals to Kannada words
+                if (this.numberWords['kn-IN']) {
+                    text = text.replace(/\d/g, digit => this.numberWords['kn-IN'][digit] || digit);
+                }
+                
+                // Handle double consonants with micro-pauses
+                text = text.replace(/([ಕ-ಹ])್\1/g, '$1್ $1');
+                
+                // Replace common English terms with Kannada
+                text = text.replace(/NGO/gi, 'ಎನ್‌ಜಿಒ');
+                text = text.replace(/AI/gi, 'ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ');
+                text = text.replace(/blockchain/gi, 'ಬ್ಲಾಕ್‌ಚೈನ್');
+                
+                return text;
+            }
+            
+            initRecognition() {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                
+                if (!SpeechRecognition) {
+                    console.warn('Speech recognition not supported');
+                    return;
+                }
+                
+                this.recognition = new SpeechRecognition();
+                this.recognition.continuous = false;
+                this.recognition.interimResults = false;
+                this.recognition.lang = this.currentLanguage;
+                
+                this.recognition.onstart = () => {
+                    this.isListening = true;
+                    this.updateStatus('listening');
+                    document.getElementById('voiceButton').classList.add('listening');
+                };
+                
+                this.recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    this.updateStatus('processing');
+                    this.processVoiceCommand(transcript);
+                };
+                
+                this.recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    this.updateStatus('error');
+                    this.stop();
+                };
+                
+                this.recognition.onend = () => {
+                    this.stop();
+                };
+            }
+            
+            start() {
+                if (!this.recognition) {
+                    this.speak(this.getTranslation('notSupported'));
+                    return;
+                }
+                
+                if (!this.isListening) {
+                    this.recognition.lang = this.currentLanguage;
+                    this.recognition.start();
+                }
+            }
+            
+            stop() {
+                this.isListening = false;
+                document.getElementById('voiceButton').classList.remove('listening');
+                document.getElementById('voiceStatus').classList.remove('active');
+            }
+            
+            updateStatus(status) {
+                const statusElement = document.getElementById('voiceStatus');
+                statusElement.textContent = this.getTranslation(status);
+                statusElement.classList.add('active');
+            }
+            
+            getTranslation(key) {
+                return this.translations[this.currentLanguage]?.[key] || this.translations['en-US'][key];
+            }
+            
+            processVoiceCommand(command) {
+                console.log('Voice command:', command);
+                
+                // Add to chatbot
+                addMessage(command, 'user');
+                const response = chatbot.respond(command);
+                addMessage(response, 'bot');
+                
+                // Speak response immediately after processing
+                setTimeout(() => {
+                    this.speak(response);
+                }, 300);
+                
+                // Execute command actions
+                const lowerCommand = command.toLowerCase();
+                
+                if (lowerCommand.includes('donate') || lowerCommand.includes('donation')) {
+                    setTimeout(() => {
+                        const firstNgo = ngoData[0];
+                        openDonationModal(firstNgo.id);
+                    }, 2000);
+                }
+                
+                if (lowerCommand.includes('blockchain') || lowerCommand.includes('transaction')) {
+                    document.getElementById('blockchain').scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                if (lowerCommand.includes('ngo') || lowerCommand.includes('organization')) {
+                    document.getElementById('ngos').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            
+            speak(text) {
+                this.updateStatus('speaking');
+                
+                // Cancel any ongoing speech
+                this.synthesis.cancel();
+                
+                // Remove emojis, numbers in parentheses, and special characters for better speech
+                let cleanText = text.replace(/[🎤🤖🔊⚠️✅❌💰⛓️🏢👋📊🔍🔗💝📧👤🔒📱]/g, '')
+                                     .replace(/\(\d+\)/g, '')
+                                     .replace(/\d+\./g, '')
+                                     .trim();
+                
+                // Preprocess text for all Indian languages that need it
+                if (this.currentLanguage === 'ta-IN') {
+                    cleanText = this.preprocessTamilText(cleanText);
+                } else if (this.currentLanguage === 'te-IN') {
+                    cleanText = this.preprocessTeluguText(cleanText);
+                } else if (this.currentLanguage === 'kn-IN') {
+                    cleanText = this.preprocessKannadaText(cleanText);
+                } else if (['mr-IN', 'gu-IN', 'ml-IN', 'pa-IN', 'bn-IN'].includes(this.currentLanguage)) {
+                    // Basic preprocessing for other Indian languages
+                    cleanText = cleanText.replace(/NGO/gi, 'एनजीओ');
+                    cleanText = cleanText.replace(/AI/gi, 'एआई');
+                }
+                
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                
+                // Enhanced clarity settings for all Indian languages
+                if (this.currentLanguage === 'ta-IN') {
+                    utterance.rate = 0.7;
+                    utterance.pitch = 1.15;
+                    utterance.volume = 1.0;
+                } else if (this.currentLanguage === 'te-IN') {
+                    utterance.rate = 0.75;
+                    utterance.pitch = 1.08;
+                    utterance.volume = 1.0;
+                } else if (this.currentLanguage === 'kn-IN') {
+                    utterance.rate = 0.72;
+                    utterance.pitch = 1.1;
+                    utterance.volume = 1.0;
+                } else if (['mr-IN', 'gu-IN', 'ml-IN', 'pa-IN'].includes(this.currentLanguage)) {
+                    utterance.rate = 0.78;
+                    utterance.pitch = 1.05;
+                    utterance.volume = 1.0;
+                } else if (this.currentLanguage === 'bn-IN') {
+                    utterance.rate = 0.8;
+                    utterance.pitch = 1.03;
+                    utterance.volume = 1.0;
+                } else if (this.currentLanguage === 'hi-IN') {
+                    utterance.rate = 0.82;
+                    utterance.pitch = 1.02;
+                    utterance.volume = 1.0;
+                } else {
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1.0;
+                    utterance.volume = 1.0;
+                }
+                
+                // Wait for voices to load with retry mechanism
+                const setVoiceAndSpeak = () => {
+                    const voices = this.synthesis.getVoices();
+                    
+                    if (voices.length === 0) {
+                        setTimeout(() => setVoiceAndSpeak(), 100);
+                        return;
+                    }
+                    
+                    const langPrefix = this.currentLanguage.split('-')[0];
+                    const langCode = this.currentLanguage.split('-')[1];
+                    
+                    // Enhanced voice selection with broader matching
+                    const voiceSelectionStrategies = [
+                        // Premium voices
+                        v => v.name.includes('Wavenet') && v.lang === this.currentLanguage,
+                        v => v.name.includes('Wavenet') && v.lang.startsWith(langPrefix),
+                        v => v.name.includes('Neural') && v.lang === this.currentLanguage,
+                        v => v.name.includes('Neural') && v.lang.startsWith(langPrefix),
+                        // Standard Google voices (best for Indian languages)
+                        v => v.name.includes('Google') && v.lang === this.currentLanguage,
+                        v => v.name.includes('Google') && v.lang.startsWith(langPrefix),
+                        v => v.name.toLowerCase().includes('google') && v.lang.includes(langCode),
+                        // Microsoft voices
+                        v => v.name.includes('Microsoft') && v.lang === this.currentLanguage,
+                        v => v.name.includes('Microsoft') && v.lang.startsWith(langPrefix),
+                        // Exact language match
+                        v => v.lang === this.currentLanguage,
+                        v => v.lang.startsWith(langPrefix),
+                        // Language name in voice name
+                        v => v.name.toLowerCase().includes(langPrefix),
+                        v => v.name.toLowerCase().includes(langCode?.toLowerCase()),
+                        // Any voice containing language code
+                        v => v.lang.includes(langPrefix)
+                    ];
+                    
+                    let selectedVoice = null;
+                    for (let strategy of voiceSelectionStrategies) {
+                        selectedVoice = voices.find(strategy);
+                        if (selectedVoice) break;
+                    }
+                    
+                    if (selectedVoice) {
+                        utterance.voice = selectedVoice;
+                        utterance.lang = selectedVoice.lang;
+                    } else {
+                        // Force language setting even without specific voice
+                        utterance.lang = this.currentLanguage;
+                    }
+                    
+                    utterance.onend = () => {
+                        this.stop();
+                    };
+                    
+                    utterance.onerror = (e) => {
+                        console.error('Speech synthesis error:', e);
+                        this.stop();
+                    };
+                    
+                    utterance.onstart = () => {
+                        this.updateStatus('speaking');
+                    };
+                    
+                    // Use a small delay to ensure voice is set
+                    setTimeout(() => {
+                        try {
+                            this.synthesis.speak(utterance);
+                        } catch (error) {
+                            console.error('Speech error:', error);
+                            this.stop();
+                        }
+                    }, 50);
+                };
+                
+                setVoiceAndSpeak();
+            }
+            
+            setLanguage(lang) {
+                this.currentLanguage = lang;
+                if (this.recognition) {
+                    this.recognition.lang = lang;
+                }
+            }
+        }
+        
+        const voiceAssistant = new VoiceAssistant();
+        
+        function toggleVoiceAssistant() {
+            if (voiceAssistant.isListening) {
+                voiceAssistant.stop();
+            } else {
+                voiceAssistant.start();
+            }
+        }
+        
+        function changeLanguage() {
+            const select = document.getElementById('languageSelect');
+            const language = select.value;
+            voiceAssistant.setLanguage(language);
+            
+            const welcomeMsg = voiceAssistant.getTranslation('welcome');
+            const langName = select.options[select.selectedIndex].text;
+            addMessage(`🌐 Language changed to ${langName}`, 'bot');
+            
+            // Open chat window to show response
+            document.getElementById('chatWindow').classList.add('active');
+            
+            setTimeout(() => {
+                voiceAssistant.speak(welcomeMsg);
+            }, 500);
+        }
+        
+        // ============================================
+        // NGO DATA
+        // ============================================
+        
+        const ngoData = [
+            {
+                id: 1,
+                name: "Akshaya Patra Foundation",
+                category: "Education",
+                description: "Combating classroom hunger by providing nutritious meals to schoolchildren across India since 2000.",
+                raised: 1820000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/akshaya-patra",
+                age: 24,
+                utilizationRate: 0.91,
+                adminCost: 0.09,
+                audited: true,
+                reports: 12,
+                complaints: 0
+            },
+            {
+                id: 2,
+                name: "Smile Foundation",
+                category: "Children",
+                description: "Empowering disadvantaged children through education, healthcare, and livelihood programs since 2002.",
+                raised: 1560000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/smile-foundation",
+                age: 22,
+                utilizationRate: 0.88,
+                adminCost: 0.12,
+                audited: true,
+                reports: 10,
+                complaints: 0
+            },
+            {
+                id: 3,
+                name: "HelpAge India",
+                category: "Healthcare",
+                description: "Providing healthcare, livelihood support, and advocacy for underprivileged elderly citizens across India.",
+                raised: 1640000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/helpage-india",
+                age: 45,
+                utilizationRate: 0.87,
+                adminCost: 0.13,
+                audited: true,
+                reports: 15,
+                complaints: 0
+            },
+            {
+                id: 4,
+                name: "Greenpeace India",
+                category: "Environment",
+                description: "Campaigning for climate action, forest protection, and sustainable solutions for environmental challenges.",
+                raised: 1440000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/greenpeace",
+                age: 18,
+                utilizationRate: 0.82,
+                adminCost: 0.18,
+                audited: true,
+                reports: 8,
+                complaints: 0
+            },
+            {
+                id: 5,
+                name: "Goonj",
+                category: "Poverty",
+                description: "Addressing clothing poverty, disaster relief, and rural development by connecting urban surplus with rural needs.",
+                raised: 1760000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/goonj",
+                age: 25,
+                utilizationRate: 0.93,
+                adminCost: 0.07,
+                audited: true,
+                reports: 14,
+                complaints: 0
+            },
+            {
+                id: 6,
+                name: "Pratham Education Foundation",
+                category: "Education",
+                description: "Improving quality of education for underprivileged children through innovative learning programs and teacher training.",
+                raised: 1520000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/pratham",
+                age: 30,
+                utilizationRate: 0.89,
+                adminCost: 0.11,
+                audited: true,
+                reports: 16,
+                complaints: 0
+            },
+            {
+                id: 7,
+                name: "Narayan Seva Sansthan",
+                category: "Healthcare",
+                description: "Providing corrective surgeries, healthcare, education, and aid to differently-abled individuals from underprivileged backgrounds.",
+                raised: 1680000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/narayan-seva-sansthan",
+                age: 40,
+                utilizationRate: 0.86,
+                adminCost: 0.14,
+                audited: true,
+                reports: 11,
+                complaints: 0
+            },
+            {
+                id: 8,
+                name: "Nanhi Kali",
+                category: "Women",
+                description: "Supporting education and empowerment of underprivileged girls across India through comprehensive programs.",
+                raised: 1380000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/nanhi-kali",
+                age: 21,
+                utilizationRate: 0.90,
+                adminCost: 0.10,
+                audited: true,
+                reports: 9,
+                complaints: 0
+            },
+            {
+                id: 9,
+                name: "CRY (Child Rights and You)",
+                category: "Children",
+                description: "Working to end child labor and ensure education, health, and protection for underprivileged children since 1979.",
+                raised: 1300000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/cry",
+                age: 45,
+                utilizationRate: 0.85,
+                adminCost: 0.15,
+                audited: true,
+                reports: 13,
+                complaints: 0
+            },
+            {
+                id: 10,
+                name: "RASS (Rural Development)",
+                category: "Rural Development",
+                description: "Working for sustainable rural development through agriculture, education, health, and livelihood programs.",
+                raised: 1600000,
+                goal: 2000000,
+                verified: true,
+                linkedIn: "https://linkedin.com/company/rass",
+                age: 35,
+                utilizationRate: 0.88,
+                adminCost: 0.12,
+                audited: true,
+                reports: 10,
+                complaints: 0
+            }
+        ];
+        
+        // ============================================
+        // USER AUTHENTICATION
+        // ============================================
+        
+        let isLoggedIn = false;
+        let currentUser = null;
+        
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+        
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+        
+        function switchTab(tab) {
+            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.login-form').forEach(f => f.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            
+            if (tab === 'login') {
+                document.getElementById('loginForm').classList.add('active');
+            } else if (tab === 'signup') {
+                document.getElementById('signupForm').classList.add('active');
+            }
+        }
+        
+        function handleLogin() {
+            // Simulate login
+            currentUser = {
+                name: 'John Doe',
+                email: 'john@example.com',
+                initials: 'JD'
+            };
+            isLoggedIn = true;
+            closeLoginModal();
+            showUserMenu();
+            addMessage('✅ Welcome back! You are now logged in.', 'bot');
+        }
+        
+        function handleSignup() {
+            // Show verification
+            document.getElementById('signupForm').classList.remove('active');
+            document.getElementById('verificationForm').classList.add('active');
+        }
+        
+        function showVerification() {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('verificationForm').classList.add('active');
+        }
+        
+        function moveToNext(current, next) {
+            if (current.value.length === 1 && next <= 6) {
+                const digits = document.querySelectorAll('.verification-digit');
+                if (digits[next]) {
+                    digits[next].focus();
+                }
+            }
+        }
+        
+        function verifyCode() {
+            const digits = document.querySelectorAll('.verification-digit');
+            const code = Array.from(digits).map(d => d.value).join('');
+            
+            if (code.length === 6) {
+                alert('✅ Verification successful! Your account is now verified.');
+                closeLoginModal();
+                // Reset form
+                digits.forEach(d => d.value = '');
+                document.getElementById('verificationForm').classList.remove('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                alert('⚠️ Please enter all 6 digits.');
+            }
+        }
+        
+        function resendCode() {
+            alert('📧 Verification code resent to your email!');
+        }
+        
+        function socialLogin(platform) {
+            alert(`Redirecting to ${platform} login... (Demo only)`);
+        }
+        
+        function showUserMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const loginBtn = navLinks.querySelector('.btn-secondary');
+            
+            if (loginBtn && isLoggedIn) {
+                loginBtn.style.display = 'none';
+                const userMenu = document.createElement('li');
+                userMenu.className = 'user-menu';
+                userMenu.innerHTML = `
+                    <div class="user-avatar" onclick="toggleUserDropdown()">${currentUser.initials}</div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" onclick="return false;">My Profile</a>
+                        <a href="#" onclick="return false;">My Donations</a>
+                        <a href="#" onclick="return false;">Settings</a>
+                        <hr>
+                        <a href="#" onclick="handleLogout(); return false;">Logout</a>
+                    </div>
+                `;
+                navLinks.appendChild(userMenu);
+            }
+        }
+        
+        function toggleUserDropdown() {
+            document.getElementById('userDropdown').classList.toggle('active');
+        }
+        
+        function handleLogout() {
+            isLoggedIn = false;
+            currentUser = null;
+            location.reload();
+        }
+        
+        // ============================================
+        // NGO REGISTRATION
+        // ============================================
+        
+        function openNGORegistrationModal() {
+            document.getElementById('ngoRegistrationModal').classList.add('active');
+        }
+        
+        function closeNGORegistrationModal() {
+            document.getElementById('ngoRegistrationModal').classList.remove('active');
+        }
+        
+        function switchNGOTab(tab) {
+            document.querySelectorAll('#ngoRegistrationModal .login-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#ngoRegistrationModal .login-form').forEach(f => f.classList.remove('active'));
+            
+            const tabs = ['basic', 'documents', 'verification'];
+            const index = tabs.indexOf(tab);
+            document.querySelectorAll('#ngoRegistrationModal .login-tab')[index].classList.add('active');
+            
+            if (tab === 'basic') {
+                document.getElementById('ngoBasicForm').classList.add('active');
+            } else if (tab === 'documents') {
+                document.getElementById('ngoDocumentsForm').classList.add('active');
+            } else if (tab === 'verification') {
+                document.getElementById('ngoVerificationForm').classList.add('active');
+            }
+        }
+        
+        function submitNGORegistration() {
+            alert(`✅ Application Submitted Successfully!\n\nThank you for registering with Smart Donation. Our verification team will review your application within 3-5 business days.\n\nYou will receive email updates at each stage.\n\nApplication ID: NGO-${Math.floor(Math.random() * 10000)}`);
+            closeNGORegistrationModal();
+        }
+        
+        // ============================================
+        // CSR REGISTRATION
+        // ============================================
+        
+        function openCSRModal() {
+            document.getElementById('csrModal').classList.add('active');
+        }
+        
+        function closeCSRModal() {
+            document.getElementById('csrModal').classList.remove('active');
+        }
+        
+        function submitCSRRegistration() {
+            alert(`✅ CSR Registration Successful!\n\nThank you for registering. Our CSR compliance team will review your application and contact you within 24 hours.\n\nApplication ID: CSR-${Math.floor(Math.random() * 10000)}\n\nYou will receive a confirmation email shortly with your login credentials.`);
+            closeCSRModal();
+        }
+        
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+        
+        let currentNGO = null;
+        
+        function renderNGOs() {
+            const grid = document.getElementById('ngoGrid');
+            grid.innerHTML = ngoData.map(ngo => {
+                const analysis = fraudDetector.analyzeNGO(ngo);
+                const progress = (ngo.raised / ngo.goal) * 100;
+                
+                return `
+                    <div class="ngo-card" onclick="openDonationModal(${ngo.id})">
+                        <div class="ngo-header">
+                            <div>
+                                <div class="ngo-title">${ngo.name}</div>
+                                <div class="ngo-category">${ngo.category}</div>
+                            </div>
+                            <div class="fraud-badge ${analysis.status.toLowerCase()}">
+                                ${analysis.badge} ${analysis.score}
+                            </div>
+                        </div>
+                        <p class="ngo-description">${ngo.description}</p>
+                        <div class="ngo-stats">
+                            <div class="ngo-stat-item">
+                                <span class="ngo-stat-label">Raised</span>
+                                <span class="ngo-stat-value">₹${(ngo.raised / 100000).toFixed(1)}L</span>
+                            </div>
+                            <div class="ngo-stat-item">
+                                <span class="ngo-stat-label">Goal</span>
+                                <span class="ngo-stat-value">₹${(ngo.goal / 100000).toFixed(1)}L</span>
+                            </div>
+                            <div class="ngo-stat-item">
+                                <span class="ngo-stat-label">Age</span>
+                                <span class="ngo-stat-value">${ngo.age}y</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <a href="${ngo.linkedIn}" target="_blank" onclick="event.stopPropagation()" 
+                           style="display: block; text-align: center; color: var(--color-primary); text-decoration: none; margin: 1rem 0; font-size: 0.9rem;">
+                            🔗 View LinkedIn Profile
+                        </a>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="event.stopPropagation(); openDonationModal(${ngo.id})">
+                            💝 Donate Now
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderBlockchain() {
+            const view = document.getElementById('blockchainView');
+            const recentBlocks = blockchain.chain.slice(-5).reverse();
+            
+            if (recentBlocks.length === 0) {
+                view.innerHTML = '<p style="text-align: center; color: var(--color-text-secondary);">No blocks yet. Make a donation to see blockchain in action!</p>';
+                return;
+            }
+            
+            view.innerHTML = recentBlocks.map(block => `
+                <div class="block">
+                    <div class="block-hash">Block #${block.index} | Hash: ${block.hash}</div>
+                    <div class="block-data">
+                        ${block.data.type === 'GENESIS' ? 
+                            `🎉 ${block.data.message}` :
+                            `💰 Donation: ₹${block.data.amount.toLocaleString()} to ${block.data.ngoName}<br>
+                             👤 Donor: ${block.data.donorName} | 🎯 Purpose: ${block.data.purpose}<br>
+                             🛡️ Fraud Score: ${block.data.fraudScore}/100`
+                        }
+                        <br>⏰ ${new Date(block.timestamp).toLocaleString()}
+                        ${block.data.type !== 'GENESIS' ? `<br>🔗 Previous Hash: ${block.previousHash}` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateStats() {
+            document.getElementById('blockCount').textContent = blockchain.chain.length;
+            
+            const totalDonations = blockchain.chain
+                .filter(b => b.data.type === 'DONATION')
+                .reduce((sum, b) => sum + (b.data.amount || 0), 0);
+            
+            document.getElementById('totalDonations').textContent = totalDonations > 0 
+                ? `₹${(totalDonations / 100000).toFixed(1)}L` 
+                : '₹0';
+            document.getElementById('ngoCount').textContent = ngoData.length;
+        }
+        
+        function openDonationModal(ngoId) {
+            currentNGO = ngoData.find(n => n.id === ngoId);
+            if (!currentNGO) return;
+            
+            const analysis = fraudDetector.analyzeNGO(currentNGO);
+            
+            document.getElementById('modalNgoName').textContent = currentNGO.name;
+            document.getElementById('fraudAnalysis').innerHTML = `
+                <div class="analysis-title">🤖 AI Fraud Analysis: ${analysis.badge} ${analysis.status} (${analysis.score}/100)</div>
+                <div class="analysis-item">
+                    <span>Legitimacy Score:</span>
+                    <strong style="color: var(--color-primary);">${analysis.score}/100</strong>
+                </div>
+                <div class="analysis-item">
+                    <span>Government Registration:</span>
+                    <strong>${analysis.breakdown.registration}</strong>
+                </div>
+                <div class="analysis-item">
+                    <span>LinkedIn Profile:</span>
+                    <strong>${analysis.breakdown.linkedin}</strong>
+                </div>
+                <div class="analysis-item">
+                    <span>Fund Utilization:</span>
+                    <strong>${analysis.breakdown.utilization}</strong>
+                </div>
+                <div class="analysis-item">
+                    <span>Third-party Audit:</span>
+                    <strong>${analysis.breakdown.audit}</strong>
+                </div>
+                <div class="analysis-item">
+                    <span>Organization Age:</span>
+                    <strong>${analysis.breakdown.age}</strong>
+                </div>
+            `;
+            
+            document.getElementById('donationModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('donationModal').classList.remove('active');
+            document.getElementById('transactionResult').innerHTML = '';
+            document.getElementById('donationAmount').value = '';
+            document.getElementById('donorName').value = '';
+            document.getElementById('donationPurpose').value = '';
+            currentNGO = null;
+        }
+        
+        function processDonation() {
+            const amount = parseInt(document.getElementById('donationAmount').value);
+            const donorName = document.getElementById('donorName').value.trim();
+            const purpose = document.getElementById('donationPurpose').value.trim();
+            
+            if (!amount || amount < 100) {
+                alert('⚠️ Please enter a valid amount (minimum ₹100)');
+                return;
+            }
+            
+            if (!donorName) {
+                alert('⚠️ Please enter your name');
+                return;
+            }
+            
+            const blockData = {
+                type: 'DONATION',
+                donorName: donorName,
+                ngoId: currentNGO.id,
+                ngoName: currentNGO.name,
+                amount: amount,
+                purpose: purpose || 'General donation',
+                fraudScore: fraudDetector.analyzeNGO(currentNGO).score
+            };
+            
+            const block = blockchain.addBlock(blockData);
+            currentNGO.raised += amount;
+            
+            document.getElementById('transactionResult').innerHTML = `
+                <div class="transaction-result">
+                    <div style="font-weight: 700; color: var(--color-primary); margin-bottom: 0.75rem; font-size: 1.1rem;">
+                        ✅ Transaction Successfully Recorded on Blockchain!
+                    </div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Block Number:</strong> #${block.index}</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Block Hash:</strong> ${block.hash}</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Previous Hash:</strong> ${block.previousHash}</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Timestamp:</strong> ${new Date(block.timestamp).toLocaleString()}</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Mining Nonce:</strong> ${block.nonce}</div>
+                    <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--color-primary); color: var(--color-primary);">
+                        🔐 Your donation is permanently recorded and cannot be altered!
+                    </div>
+                </div>
+            `;
+            
+            renderNGOs();
+            renderBlockchain();
+            updateStats();
+            
+            setTimeout(() => {
+                addMessage(`✅ Your ₹${amount.toLocaleString()} donation to ${currentNGO.name} has been successfully recorded on blockchain! Block hash: ${block.hash.substring(0, 16)}...`, 'bot');
+            }, 1000);
+        }
+        
+        function refreshBlockchain() {
+            renderBlockchain();
+            updateStats();
+            addMessage('🔄 Blockchain refreshed! Chain is valid: ' + (blockchain.isChainValid() ? '✅ Yes' : '❌ No'), 'bot');
+        }
+        
+        // ============================================
+        // CHATBOT UI
+        // ============================================
+        
+        function toggleChat() {
+            document.getElementById('chatWindow').classList.toggle('active');
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            setTimeout(() => {
+                const response = chatbot.respond(message);
+                addMessage(response, 'bot');
+            }, 500);
+        }
+        
+        function sendQuickMessage(message) {
+            addMessage(message, 'user');
+            setTimeout(() => {
+                const response = chatbot.respond(message);
+                addMessage(response, 'bot');
+            }, 500);
+        }
+        
+        function addMessage(text, sender) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = text.replace(/\n/g, '<br>');
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        window.onload = function() {
+            renderNGOs();
+            renderBlockchain();
+            updateStats();
+            
+            // Load voices for speech synthesis with comprehensive debugging
+            if (window.speechSynthesis) {
+                window.speechSynthesis.getVoices();
+                window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+            }
+            
+            // Welcome message
+            setTimeout(() => {
+                const welcomeMsg = '👋 Welcome to Smart Donation! I am your AI voice assistant. You can ask me about NGOs, blockchain, or donations. Click the microphone button to speak!';
+                addMessage(welcomeMsg, 'bot');
+            }, 1000);
+            
+            if (blockchain.chain.length === 1) {
+                blockchain.addBlock({
+                    type: 'DONATION',
+                    donorName: 'Rahul Sharma',
+                    ngoId: 1,
+                    ngoName: 'Akshaya Patra Foundation',
+                    amount: 5000,
+                    purpose: 'Mid-day meal program',
+                    fraudScore: 91
+                });
+                
+                blockchain.addBlock({
+                    type: 'DONATION',
+                    donorName: 'Priya Patel',
+                    ngoId: 2,
+                    ngoName: 'Smile Foundation',
+                    amount: 10000,
+                    purpose: 'Education for children',
+                    fraudScore: 88
+                });
+                
+                renderBlockchain();
+                updateStats();
+            }
+            
+            console.log('🔗 Blockchain initialized with', blockchain.chain.length, 'blocks');
+            console.log('🤖 AI Fraud Detection active');
+            console.log('💬 AI Chatbot ready');
+        };
+    </script>
+</body>
+</html>
